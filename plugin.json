@@ -1,0 +1,14 @@
+{
+  "plugin.id": "template",
+  "plugin.name": "Template Plugin",
+  "plugin.version": "1.0.0",
+  "plugin.min-api-version": "1.0.0",
+  "plugin.link": "",
+  "plugin.source": "",
+  "plugin.description": "",
+  "store.tags": [],
+  "store.images": [],
+  "author.name": "First Last",
+  "author.email": "person@example.com",
+  "entrypoint": "plugin.gd"
+}
