@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://byfl2n3mgu1wl"]
+
+[ext_resource type="Script" path="res://plugins/lutris/core/library.gd" id="1_lkte4"]
+[ext_resource type="Texture2D" uid="uid://vmxevju8fdjc" path="res://plugins/lutris/assets/lutris.svg" id="2_ajxom"]
+
+[node name="LutrisLibrary" type="Node"]
+script = ExtResource("1_lkte4")
+library_id = "lutris"
+library_icon = ExtResource("2_ajxom")
+supports_uninstall = false
+logger_name = "LutrisLibrary"
