@@ -9,8 +9,13 @@ func _init() -> void:
 
 
 ## Returns the command string to run Lutris
-func get_lutris_command() -> String:
-	return "lutris"
+func get_lutris_command() -> LutrisCmd:
+	if await _valid_lutris_cmd("lutris", []):
+		return LutrisCmd.new("lutris")
+	if await _valid_lutris_cmd("flatpak", ["run", "net.lutris.Lutris"]):
+		return LutrisCmd.new("flatpak", ["run", "net.lutris.Lutris"])
+	
+	return LutrisCmd.new("lutris")
 
 
 ## Returns a list of locally install Lutris games
@@ -59,9 +64,17 @@ func get_games() -> Array[LutrisApp]:
 	return games
 
 
-## Executes flatpak with the given arguments
+## Executes the lutris command with the given arguments
 func _exec(args: PackedStringArray) -> CmdOutput:
-	var cmd := get_lutris_command()
+	var lutris_cmd := await get_lutris_command()
+	var cmd := lutris_cmd.cmd
+	var arguments := lutris_cmd.args.duplicate()
+	arguments.append_array(args)
+	return await _exec_cmd(cmd, arguments)
+
+
+## Execute the given command and return its output
+func _exec_cmd(cmd: String, args: PackedStringArray) -> CmdOutput:
 	logger.debug("Executing command: " + cmd + " " + " ".join(args))
 	var output := []
 	var code := await thread_pool.exec(OS.execute.bind(cmd, args, output)) as int
@@ -72,6 +85,28 @@ func _exec(args: PackedStringArray) -> CmdOutput:
 	logger.debug("Command output: " + output[0])
 	
 	return cmd_out
+
+
+## Tries to execute the given Lutris command to see if it exists. This will
+## append the '--version' argument to the given command to see if it
+## executes successfully, indiciating that this command will work.
+func _valid_lutris_cmd(cmd: String, args: PackedStringArray) -> bool:
+	var cmd_args := args.duplicate()
+	cmd_args.push_back("--version")
+	var cmd_output := await _exec_cmd(cmd, args)
+	logger.debug("Executing command: " + cmd + " " + " ".join(args))
+
+	return cmd_output.code == 0
+
+
+## Structure that defines a lutris command
+class LutrisCmd extends RefCounted:
+	var cmd: String
+	var args: PackedStringArray
+	
+	func _init(command: String, arguments: PackedStringArray = []) -> void:
+		self.cmd = command
+		self.args = arguments
 
 
 ## Output of a lutris command
