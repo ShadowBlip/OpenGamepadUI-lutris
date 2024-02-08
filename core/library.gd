@@ -17,12 +17,18 @@ func get_library_launch_items() -> Array[LibraryLaunchItem]:
 		if game.slug == "":
 			continue
 		
+		# Get the lutris command to use
+		var lutris_cmd := await lutris.get_lutris_command()
+		var cmd := lutris_cmd.cmd
+		var args := lutris_cmd.args
+		args.append("lutris:rungame/" + game.slug)
+		
 		# Create a launch item for this game
 		var item := LibraryLaunchItem.new()
 		item.name = game.name
 		item.provider_app_id = game.slug
-		item.command = lutris.get_lutris_command()
-		item.args = ["lutris:rungame/" + game.slug]
+		item.command = cmd
+		item.args = args
 		item.tags = ["lutris"]
 		item.installed = true
 		item.hidden = game.hidden
