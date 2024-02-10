@@ -1,7 +1,7 @@
 {
   "plugin.id": "lutris",
   "plugin.name": "Lutris",
-  "plugin.version": "1.0.2",
+  "plugin.version": "1.0.3",
   "plugin.min-api-version": "1.0.0",
   "plugin.link": "https://github.com/ShadowBlip/OpenGamepadUI-lutris",
   "plugin.source": "https://github.com/ShadowBlip/OpenGamepadUI-lutris",
