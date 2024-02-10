@@ -94,7 +94,7 @@ func _valid_lutris_cmd(cmd: String, args: PackedStringArray) -> bool:
 	var cmd_args := args.duplicate()
 	cmd_args.push_back("--version")
 	var cmd_output := await _exec_cmd(cmd, cmd_args)
-	logger.debug("Executing command: " + cmd + " " + " ".join(args))
+	logger.debug("Executing command: " + cmd + " " + " ".join(cmd_args))
 
 	return cmd_output.code == 0
 
