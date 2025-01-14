@@ -3,7 +3,7 @@ PLUGIN_NAME ?= $(shell grep 'plugin\.name' plugin.json | awk '{print $$2}' | gre
 
 GODOT ?= /usr/bin/godot
 OPENGAMEPAD_UI_REPO ?= https://github.com/ShadowBlip/OpenGamepadUI.git
-OPENGAMEPAD_UI_BASE ?= ../OpenGamepadUI
+OPENGAMEPAD_UI_BASE ?= $(shell readlink -e ../OpenGamepadUI)
 EXPORT_PRESETS ?= $(OPENGAMEPAD_UI_BASE)/export_presets.cfg
 PLUGINS_DIR := $(OPENGAMEPAD_UI_BASE)/plugins
 BUILD_DIR := $(OPENGAMEPAD_UI_BASE)/build
