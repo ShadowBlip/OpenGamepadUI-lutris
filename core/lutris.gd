@@ -14,7 +14,7 @@ func get_lutris_command() -> LutrisCmd:
 		return LutrisCmd.new("lutris")
 	if await _valid_lutris_cmd("flatpak", ["run", "net.lutris.Lutris"]):
 		return LutrisCmd.new("flatpak", ["run", "net.lutris.Lutris"])
-	
+
 	return LutrisCmd.new("lutris")
 
 
@@ -83,7 +83,7 @@ func _exec_cmd(cmd: String, args: PackedStringArray) -> CmdOutput:
 	cmd_out.output = output[0]
 	logger.debug("Command exit code: " + str(code))
 	logger.debug("Command output: " + output[0])
-	
+
 	return cmd_out
 
 
@@ -103,7 +103,7 @@ func _valid_lutris_cmd(cmd: String, args: PackedStringArray) -> bool:
 class LutrisCmd extends RefCounted:
 	var cmd: String
 	var args: PackedStringArray
-	
+
 	func _init(command: String, arguments: PackedStringArray = []) -> void:
 		self.cmd = command
 		self.args = arguments
