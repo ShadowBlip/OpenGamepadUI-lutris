@@ -8,9 +8,9 @@ var logger := Log.get_logger("Lutris", Log.LEVEL.INFO)
 ## Returns the command string to run Lutris
 func get_lutris_command() -> Command:
 	if not _lutris_command.is_empty():
-		return Command.create(_lutris_command, _lutris_base_args)
+		return Command.create(_lutris_command, _lutris_base_args.duplicate())
 	if await _valid_lutris_cmd("lutris", []):
-		logger.info("Detected flatpak installation of Lutris")
+		logger.info("Detected native installation of Lutris")
 		_lutris_command = "lutris"
 		_lutris_base_args = []
 	elif await _valid_lutris_cmd("flatpak", ["run", "net.lutris.Lutris"]):
@@ -18,7 +18,7 @@ func get_lutris_command() -> Command:
 		_lutris_command = "flatpak"
 		_lutris_base_args = ["run", "net.lutris.Lutris"]
 
-	return Command.create(_lutris_command, _lutris_base_args)
+	return Command.create(_lutris_command, _lutris_base_args.duplicate())
 
 
 ## Returns a list of locally install Lutris games
@@ -72,7 +72,8 @@ func _exec(args: PackedStringArray) -> Command:
 	var lutris_cmd := await get_lutris_command()
 	for arg in args:
 		lutris_cmd.args.push_back(arg)
-	return await _exec_cmd(lutris_cmd)
+	await _exec_cmd(lutris_cmd)
+	return lutris_cmd
 
 
 ## Execute the given command and return its output
